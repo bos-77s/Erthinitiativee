@@ -6,3 +6,16 @@ coverage/
 !.env.example
 .local-data/
 *.tsbuildinfo
+
+# Local secrets and credentials
+secrets/
+credentials/
+credentials.json
+secrets.json
+service-account*.json
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
