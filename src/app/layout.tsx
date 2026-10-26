@@ -3,6 +3,7 @@ import { LanguageProvider } from "@/components/language-provider";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.ERTH_SITE_URL ?? "http://localhost:3000"),
   title: {
     default: "إرث | ERTH",
     template: "%s | إرث",
@@ -12,6 +13,24 @@ export const metadata: Metadata = {
     title: "إرث | ERTH",
     description: "نبني اليوم ما سيترك أثرًا غدًا.",
     type: "website",
+    images: [
+      {
+        url: "/8-removebg-preview.png",
+        width: 500,
+        height: 500,
+        alt: "شعار إرث | ERTH",
+      },
+    ],
+  },
+  icons: {
+    icon: "/8-removebg-preview.png",
+    apple: "/8-removebg-preview.png",
+  },
+  twitter: {
+    card: "summary",
+    title: "إرث | ERTH",
+    description: "نبني اليوم ما سيترك أثرًا غدًا.",
+    images: ["/8-removebg-preview.png"],
   },
 };
 

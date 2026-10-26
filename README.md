@@ -21,6 +21,8 @@ npm.cmd start -- --port 3010
 npm.cmd run test:http
 ```
 
+Set `ERTH_SITE_URL` to the site's public origin in the deployment environment so Open Graph and social image URLs use the correct absolute URL. The `.env.example` value is only for local development.
+
 `test:http` expects the production server at `http://127.0.0.1:3010`; set `ERTH_BASE_URL` if you choose another port.
 
 With the production server running, verify HTTP routes, UTF-8 rendering, navigation, private join submissions, and admin restrictions using `npm.cmd run test:http`. The default test URL is `http://127.0.0.1:3010`; override it with `ERTH_BASE_URL` if needed.

@@ -24,7 +24,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .site-header { position: relative; z-index: 10; background: var(--paper); border-bottom: 1px solid rgba(23,59,42,.08); }
 .header-inner { width: min(1320px, calc(100% - 64px)); height: 86px; margin: auto; display: flex; align-items: center; justify-content: space-between; }
 .wordmark { display: inline-flex; align-items: center; gap: 10px; color: var(--deep); }
-.wordmark-mark { width: 39px; height: 39px; display: grid; place-items: center; border-radius: 50%; background: var(--green); color: var(--ivory); font-size: 23px; line-height: 1; }
+.wordmark-logo { display: block; width: 52px; height: 52px; flex: none; object-fit: contain; }
 .wordmark b { display: block; font-size: 20px; line-height: 1.1; }
 .wordmark small { display: block; margin-top: 3px; color: #778278; font-size: 9px; letter-spacing: .14em; }
 .main-nav { display: flex; align-items: center; gap: 31px; color: #435248; font-size: 13px; }
@@ -338,4 +338,28 @@ html:lang(en) body { font-family: "IBM Plex Sans", "IBM Plex Sans Arabic", Arial
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+/* ERTH story section logo */
+.art-seed:has(.story-logo) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.story-logo {
+  display: block;
+  width: 72%;
+  max-width: 220px;
+  height: auto;
+  object-fit: contain;
+}
+/* Actions beside editable admin records */
+.managed-row-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+.managed-row-actions > .button {
+  white-space: nowrap;
 }

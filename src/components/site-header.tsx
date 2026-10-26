@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { useLanguage } from "./language-provider";
@@ -33,7 +34,7 @@ export function SiteHeader() {
     <header className="site-header">
       <div className="header-inner">
         <Link className="wordmark" href="/" aria-label="ERTH home">
-          <span className="wordmark-mark">إ</span>
+          <Image className="wordmark-logo" src="/8-removebg-preview.png" alt="شعار إرث | ERTH" width={52} height={52} />
           <span><b>إرث</b><small>ERTH · أثرٌ يمتد</small></span>
         </Link>
         <button className="menu-toggle" aria-label={language === "ar" ? "فتح القائمة" : "Open menu"} aria-expanded={open} onClick={() => setOpen(!open)}>

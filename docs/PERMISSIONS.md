@@ -2,9 +2,11 @@
 
 ## Authority model
 
-- **Manager:** the sole unrestricted administrative role. Only the manager can approve/reject coordinator requests, assign/revoke permissions, suspend coordinator access, control global settings, and perform manager-only actions.
-- **Coordinator:** receives no access by default. The manager must approve a request, provision an authenticated account, and assign each permission. Access must be denied on both route handlers and protected database records when the permission is missing.
+- **Manager:** the sole role allowed to access the dashboard summary, private inquiries and applications, settings, audit data, and exports, and the only role allowed to manage or publish content. Only the manager can assign/revoke permissions and suspend coordinator access.
+- **Coordinator:** receives no access by default. If explicitly granted a content-view permission, the API returns published/approved records only; private records and drafts remain manager-only. Assignments are limited to known permissions that are not manager-only. The authorization helper rejects unknown permissions for every role.
 - A coordinator cannot change their role, grant or revoke anyone's access, approve their own application, or become a manager.
+- Administrative account creation is intended to be invitation-only. This is not implemented yet: the current project has no production authentication or account provisioning flow.
+- MFA is a production requirement for managers; coordinator MFA is recommended. Neither is implemented in the current local preview.
 
 The local preview is **not an authentication implementation**. It only simulates a manager for local testing and is intentionally not safe for real data or public exposure.
 
@@ -12,25 +14,28 @@ The local preview is **not an authentication implementation**. It only simulates
 
 | Area | Permissions | Intended scope |
 |---|---|---|
-| Dashboard | `dashboard.view` | View the overview |
-| Members | `members.view`, `members.create`, `members.update`, `members.archive` | Team records only; member publication requires approved consent |
-| Initiatives | `initiatives.view`, `initiatives.create`, `initiatives.update`, `initiatives.publish`, `initiatives.archive` | Initiative records; publication and archival are separate capabilities |
-| Partners | `partners.view`, `partners.create`, `partners.update`, `partners.archive` | Partner records; publish only verified, approved relationship details |
-| Inquiries | `inquiries.view`, `inquiries.respond`, `inquiries.archive` | Private contact requests; never exposed through public content APIs |
-| Content | `content.view`, `content.update` | Public site copy and managed content |
-| Media | `media.manage` | Approved assets after private storage and validation are configured |
-| Exports | `exports.create` | Explicitly scoped and audited exports |
-| Audit | `audit.view` | Read-only access to sensitive-action events |
-| Global settings | Manager only | Publication state, account/access administration, and global configuration |
-| Join requests | Manager only | Read private applications and record approve/reject decisions; an application decision does not provision an account or grant permissions |
+| Dashboard | `dashboard.view` | Manager only; the overview returns aggregate counts only |
+| Members | `members.view`, `members.create`, `members.update`, `members.archive`, `members.publish` | Assigned coordinators may view approved, non-archived members only; management and publication are manager-only |
+| Initiatives | `initiatives.view`, `initiatives.create`, `initiatives.update`, `initiatives.publish`, `initiatives.archive` | Assigned coordinators may view published initiatives only; management and publication are manager-only |
+| Partners | `partners.view`, `partners.create`, `partners.update`, `partners.archive`, `partners.publish` | Assigned coordinators may view published partners only; management and publication are manager-only |
+| Inquiries | `inquiries.view`, `inquiries.respond`, `inquiries.archive` | Manager only; private contact requests are not exposed through public content APIs |
+| Content | `content.view`, `content.update` | Manager only |
+| Media | `media.manage` | Manager only; private storage and file validation are not configured |
+| Exports | `exports.create` | Manager only; export should be scoped and audited |
+| Audit | `audit.view` | Manager only; production append-only storage is not implemented |
+| Global settings | `site.settings` | Manager only |
+| Join requests | `join_requests.review` | Manager only for reading/reviewing private applications; public visitors may submit only |
 
 ## Enforcement locations
 
 - `src/lib/authorization.mjs`: deny-by-default permission checks, covered by `npm.cmd test`.
-- Join-request review is explicitly manager-only; public visitors may submit an application but there is no public list/read endpoint for applications.
-- `src/app/api/admin/route.ts`: server-side checks for the local manager preview; every mutation is guarded and validated.
-- `supabase/migrations/20261019000000_initial_schema.sql`: planned RLS helpers and policies. Review and exercise these against a disposable Supabase project before any production use. This migration has not been applied.
+- `src/lib/admin-api.mjs`: fixed section/action allowlists and field projections. Every section read and action is authorized before local storage access.
+- `src/app/api/admin/route.ts`: `GET /api/admin?section=<allowlisted-section>` returns only that section (`overview` is the default and contains aggregate counts only). `POST`/`PATCH` mutations return `{ "ok": true }`, not the store. Sensitive actions are checked server-side; the preview cookie is not authentication.
+- `src/components/admin-dashboard.tsx`: fetches overview and section data separately, validates response shapes, and clears section state when changing sections or ending the preview.
+- Public join-request submission is separate from administrative review; there is no public list/read endpoint for applications.
+- `supabase/migrations/20261019000000_initial_schema.sql`: planned RLS helpers and policies. It has not been applied or verified against a live database. Its policies and SQL grants still require review and alignment with this matrix.
+- `permissions` and `managerOnlyPermissions` are application-level policy lists, not a substitute for production authentication, RLS, or SQL privileges.
 
 ## Production acceptance gates
 
-Before launch, replace the preview cookie with verified Supabase Auth sessions, provision exactly one manager through a reviewed out-of-band process, implement permission administration, verify RLS with authenticated/unauthenticated test identities, and test direct API access for every role/permission combination. Do not regard hidden navigation or client-side controls as authorization.
+Before enabling administration, replace the preview cookie with verified Supabase Auth sessions, provision accounts by invitation only, require MFA for managers, implement permission administration, align a new migration with this matrix, verify SQL grants and RLS with authenticated/unauthenticated test identities, and test direct API access for every role/action combination. Do not regard hidden navigation or client-side controls as authorization.

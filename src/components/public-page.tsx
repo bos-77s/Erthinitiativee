@@ -140,14 +140,20 @@ export function PublicPage({ page }: { page: PageKey }) {
             {home && <Link className="hero-join-link" href="/join">{ar ? "انضم إلى إرث" : "Join ERTH"} <span aria-hidden="true">↗</span></Link>}
             <span className="hero-index">{home ? "01 — 02" : `ERTH / ${page.toUpperCase()}`}</span>
           </div>
-          <div className="hero-side-note">{ar ? "إرث من الفكرة إلى الأثر" : "From idea to impact"}</div>
+
         </section>
 
         {home ? (
           <>
             <section className="section intro-section"><div className="container intro-grid"><span className="eyebrow eyebrow-green"><i />{ar ? "لماذا إرث؟" : "WHY ERTH"}</span><div><h2>{data.sections[0]}</h2><p>{data.story}</p><Link className="text-link" href="/about">{ar ? "تعرّف علينا" : "Get to know us"} <span>↗</span></Link></div><span className="intro-stamp">ERTH<br />إرث</span></div></section>
             <section className="section tracks-section"><div className="container"><div className="section-heading"><div><span className="eyebrow eyebrow-green"><i />{ar ? "مساراتنا" : "OUR TRACKS"}</span><h2>{data.sections[1]}</h2></div><Link href="/tracks" className="text-link">{ar ? "كل المسارات" : "All tracks"} <span>↗</span></Link></div><div className="track-grid"><TrackCard number="01" title={ar ? "المسار الأكاديمي الابتكاري" : "Academic Innovation Track"} desc={ar ? "أفكار وتجارب تثري التعلّم وتفتح آفاق الابتكار." : "Ideas and experiences that enrich learning and open new possibilities."} href="/tracks/academic" tone="green" /><TrackCard number="02" title={ar ? "المسار المجتمعي" : "Community Track"} desc={ar ? "مبادرات تصل الناس وتستجيب لاحتياجات المجتمع." : "Initiatives that connect people and respond to community needs."} href="/tracks/community" tone="ivory" /></div></div></section>
-            <section className="story-section"><div className="container story-grid"><div className="story-art"><span className="art-ring ring-a" /><span className="art-ring ring-b" /><span className="art-seed">أثر</span><span className="art-caption">{ar ? "فكرة تنمو" : "Ideas take root"}</span></div><div className="story-copy"><span className="eyebrow"><i />{ar ? "حكاية إرث" : "THE ERTH STORY"}</span><h2>{data.sections[2]}</h2><p>{data.story}</p><Link className="text-link text-link-light" href="/about">{ar ? "اقرأ المزيد" : "Read more"} <span>↗</span></Link></div></div></section>
+            <section className="story-section"><div className="container story-grid"><div className="story-art"><span className="art-ring ring-a" /><span className="art-ring ring-b" /><span className="art-seed">
+  <img
+    src="/1-removebg-preview(1).png"
+    alt={ar ? "شعار إرث" : "ERTH logo"}
+    className="story-logo"
+  />
+</span><span className="art-caption">{ar ? "فكرة تنمو" : "Ideas take root"}</span></div><div className="story-copy"><span className="eyebrow"><i />{ar ? "حكاية إرث" : "THE ERTH STORY"}</span><h2>{data.sections[2]}</h2><p>{data.story}</p><Link className="text-link text-link-light" href="/about">{ar ? "اقرأ المزيد" : "Read more"} <span>↗</span></Link></div></div></section>
             <section className="section quiet-section"><div className="container quiet-grid"><div><span className="eyebrow eyebrow-green"><i />{ar ? "مبادرات وأنشطة" : "INITIATIVES & ACTIVITIES"}</span><h2>{ar ? "أثرٌ ينمو، خطوة بخطوة." : "Impact grows, one step at a time."}</h2></div><PublicInitiatives records={records.initiatives} ar={ar} emptyText={data.initiatives} /></div></section>
             <section className="section public-team-section"><div className="container"><div className="section-heading"><div><span className="eyebrow eyebrow-green"><i />{ar ? "الفريق" : "THE TEAM"}</span><h2>{ar ? "مساحة نعمل فيها معًا." : "A space to work together."}</h2></div><Link href="/team" className="text-link">{ar ? "تعرّف على الفريق" : "Meet the team"} <span>↗</span></Link></div><PublicTeam records={records.team} ar={ar} /></div></section>
             <section className="section gallery-section"><div className="container gallery-grid"><div><span className="eyebrow eyebrow-green"><i />{ar ? "من الذاكرة" : "FROM THE ERTH ARCHIVE"}</span><h2>{ar ? "لحظات من عملنا." : "Moments from our work."}</h2><p>{ar ? "ستظهر هنا الصور الأصلية التي يعتمدها الفريق. لا توجد صور أنشطة معتمدة للنشر حاليًا." : "Only original, approved images will appear here. No activity photos are approved for publication yet."}</p></div><div className="gallery-art" aria-label={ar ? "عنصر بصري تجريدي، ليس صورة نشاط" : "Abstract artwork, not an activity photo"}><span className="gallery-shape shape-a" /><span className="gallery-shape shape-b" /><span className="gallery-shape shape-c" /><small>{ar ? "مساحة مخصصة للصور المعتمدة" : "SPACE FOR APPROVED PHOTOGRAPHS"}</small></div></div></section>
@@ -221,7 +227,7 @@ function PublicPartners({ records, ar }: { records: PublicRecords["partners"]; a
 }
 
 function ContactCta({ ar }: { ar: boolean }) {
-  return <section className="contact-cta"><div className="container cta-inner"><div><span className="eyebrow"><i />{ar ? "معًا، للأثر القادم" : "TOGETHER, FOR WHAT'S NEXT"}</span><h2>{ar ? "لديك فكرة؟<br/>لنبدأ الحديث." : "Have an idea?<br/>Let’s talk."}</h2></div><Link className="button button-light" href="/contact">{ar ? "تواصل مع إرث" : "Contact ERTH"} <span>↗</span></Link></div></section>;
+  return <section className="contact-cta"><div className="container cta-inner"><div><span className="eyebrow"><i />{ar ? "معًا، للأثر القادم" : "TOGETHER, FOR WHAT'S NEXT"}</span><h2>{ar ? <>لديك فكرة؟<br />لنبدأ الحديث.</> : <>Have an idea?<br />Let’s talk.</>}</h2></div><Link className="button button-light" href="/contact">{ar ? "تواصل مع إرث" : "Contact ERTH"} <span>↗</span></Link></div></section>;
 }
 
 function InquiryForm({ ar, status, formError, onSubmit }: { ar: boolean; status: string; formError: string; onSubmit: (event: FormEvent<HTMLFormElement>) => void }) {
